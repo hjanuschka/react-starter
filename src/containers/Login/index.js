@@ -24,7 +24,6 @@ const mapStateToProps = (store, ownProps) => {
 class Login extends Component {
     componentWillMount() {
       //Check if we already have a active session
-      this.props.dispatch(fetchUsername())
     }
     componentDidUpdate() {
       if(this.props.userFetched) {
