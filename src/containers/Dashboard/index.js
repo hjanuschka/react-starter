@@ -4,17 +4,16 @@ import {Drawer, IconButton, IconMenu, MenuItem} from 'material-ui';
 import {connect} from 'react-redux';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import React, {Component} from 'react';
-
 import {logOutUser} from '../../actions/loginActions'
 import Base from '../Base'
 
 class Dashboard extends Component {
     // static propTypes = {}
-    constructor(props){
-      super(props);
-      this.state = {
-        menu_open: false
-      }
+    constructor(props) {
+        super(props);
+        this.state = {
+            menu_open: false
+        }
     }
     componentDidUpdate() {
         if (!this.props.userFetched) {
@@ -36,10 +35,12 @@ class Dashboard extends Component {
         )
     }
     toggleMenu() {
-      this.setState({menu_open: !this.state.menu_open});
+        this.setState({
+            menu_open: !this.state.menu_open
+        });
     }
     menuClose() {
-      this.setState({menu_open: false});
+        this.setState({menu_open: false});
     }
     render() {
         const {className} = this.props;
