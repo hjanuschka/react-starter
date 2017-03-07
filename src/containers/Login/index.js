@@ -1,80 +1,53 @@
-import React, {PropTypes, Component} from 'react';
-import classnames from 'classnames';
-import {Link} from 'react-router';
-import Base from "../../containers/Base"
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
-import superagent from 'superagent'
-import {red500} from 'material-ui/styles/colors';
 import './style.css';
 
+import { connect } from "react-redux"
+import {red500} from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
+import classnames from 'classnames';
+import superagent from 'superagent'
+
+import { fetchUsername, logOutUser,loginUser } from '../../actions/loginActions'
+
+import Base from "../../containers/Base"
+const mapStateToProps = (store, ownProps) => {
+  console.log(store);
+  return {
+    user: store.login.user,
+    userFetched: store.login.fetched,
+    output: store.login.output,
+    form: {username: null, password: null}
+  };
+}
+
 class Login extends Component {
-    // static propTypes = {}
-    // static defaultProps = {}
-    state = {
-      username: "",
-      password: "",
-      output: "INIT"
+    componentWillMount() {
+      //Check if we already have a active session
+      this.props.dispatch(fetchUsername())
     }
-    
     constructor(props){
       super(props);
-    
-      this.loginPress = this.loginPress.bind(this);
-      this.authedPress = this.authedPress.bind(this);
-      this.logoutPress = this.logoutPress.bind(this);
-      this.usernameChange = this.usernameChange.bind(this);
-      this.passwordChange = this.passwordChange.bind(this);
-      this.authedPress()
+      this.state = {
+        form: {username: null, password: null}
+      }
     }
     loginPress() {
-        var self = this;
-        superagent
-          .post('http://localhost:8100/backend/login_json')
-          .withCredentials()
-          .query({username: self.state.username, password: self.state.password})
-          .end(function(err, d) {
-            if(err) {
-              self.setState({output: "Failed"});
-              return;
-            }
-            self.setState({output: "Success - " + self.state.username});
-            console.log(d);
-            console.log(self.state)
-          })
+        this.props.dispatch(loginUser(this.state.form))
     }
     logoutPress() {
-      var self = this;
-      superagent
-        .get('http://localhost:8100/logout')
-        .withCredentials()
-        .end(function(err, d) {
-          console.log(d);
-          self.setState({output: "Logged out"});
-        })
+      this.props.dispatch(logOutUser())
     }
     authedPress() {
-      var self = this;
-      superagent
-        .get('http://localhost:8100/backend/login_name')
-        .withCredentials()
-        .end(function(err, d) {
-          if(!d.body) {
-            self.setState({output: "ERROR"});
-            return;
-          }
-          self.setState({output: "Logged in as: " + d.body.username});
-          console.log(d);
-        })
+      this.props.dispatch(fetchUsername())
+      
     }
-    usernameChange(event, newValue) {
-        console.log(event.target.value)
-        this.setState({username: newValue});
-    }
-    passwordChange(event, newValue) {
-        console.log(event.target.value)
-        this.setState({password: newValue});
+    onChange(e, newValue) {
+        console.log(e.target.name)
+        var newState = {...this.state};
+        newState.form[e.target.name] = newValue;
+        this.setState(newState)
     }
     render() {
         const style = {
@@ -88,17 +61,17 @@ class Login extends Component {
         return (
             <Base title="Login" AppBar={false}>
               <Paper className={classnames('Login', className)} style={style} zDepth={1}>
-                    <TextField hintText="Username" value={this.state.username} onChange={this.usernameChange}/><br/>
-                    <TextField type="password" value={this.state.password} onChange={this.passwordChange} hintText="Password"/><br/>
-                    <RaisedButton label="Login" primary={true} style={style} onTouchTap={this.loginPress}/>
-                    <RaisedButton label="Check Session" primary={true} style={style} onTouchTap={this.authedPress}/>
-                    <RaisedButton label="Loggout" backgroundColor={red500} style={style} onTouchTap={this.logoutPress}/>
+                    <TextField hintText="Username" name="username" onChange={this.onChange.bind(this)}/><br/>
+                    <TextField type="password"  name="password" onChange={this.onChange.bind(this)} hintText="Password"/><br/>
+                    <RaisedButton label="Login" primary={true} style={style} onTouchTap={this.loginPress.bind(this)}/>
+                    <RaisedButton label="Check Session" primary={true} style={style} onTouchTap={this.authedPress.bind(this)}/>
+                    <RaisedButton label="Loggout" backgroundColor={red500} style={style} onTouchTap={this.logoutPress.bind(this)}/>
                     
-                    Status: {this.state.output}
+                    Status: {this.props.output}
               </Paper>
             </Base>
         );
     }
 }
 
-export default Login;
+export default connect(mapStateToProps)(Login);
