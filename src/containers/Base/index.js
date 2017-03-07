@@ -10,7 +10,7 @@ export default class Base extends Component {
     AppBar: true
   }
   // state = {}
-  AppBar() {
+  TopBar() {
     
     if(!this.props.AppBar) {
       return ""
@@ -18,7 +18,7 @@ export default class Base extends Component {
     return (
       <AppBar
         title={this.props.title}
-        iconClassNameRight="muidocs-icon-navigation-expand-more"
+        iconElementRight={this.props.iconElementRight}
      />
     )
   }
@@ -27,7 +27,7 @@ export default class Base extends Component {
     console.log(this.props)
     return (
         <div className={classnames('Base', className)}>
-          {this.AppBar()}
+          {this.TopBar()}
           {this.props.children}
         </div>
     );

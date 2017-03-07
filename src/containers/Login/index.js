@@ -26,6 +26,11 @@ class Login extends Component {
       //Check if we already have a active session
       this.props.dispatch(fetchUsername())
     }
+    componentDidUpdate() {
+      if(this.props.userFetched) {
+        this.props.router.push('/dashboard')
+      }
+    }
     constructor(props){
       super(props);
       this.state = {
