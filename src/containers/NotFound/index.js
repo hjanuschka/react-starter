@@ -1,7 +1,7 @@
-import React, { PropTypes, Component } from 'react';
-import classnames from 'classnames';
-
 import './style.css';
+
+import React, { Component } from 'react';
+import classnames from 'classnames';
 
 export default class NotFound extends Component {
   // static propTypes = {}

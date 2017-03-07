@@ -11,6 +11,7 @@ export default function reducer(state={
       case "FETCH_USER": {
         return {...state, fetching: true}
       }
+      
       case "LOGOUT_USER_FULFILLED":
         return {
           ...state,
@@ -19,7 +20,6 @@ export default function reducer(state={
           user: {name: null},
           output: "Logged out"
         }
-      break;
       case "LOGIN_USER_REJECTED":
       case "FETCH_USER_REJECTED": {
         return {
@@ -56,13 +56,14 @@ export default function reducer(state={
           error: null,
           output: "Pending"
         }
-      break;
       case "SET_USER_NAME": {
         return {
           ...state,
           user: {...state.user, name: action.payload},
         }
       }
+      default:
+      break;
     }
 
     return state

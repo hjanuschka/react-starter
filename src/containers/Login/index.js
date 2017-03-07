@@ -7,11 +7,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import classnames from 'classnames';
-import superagent from 'superagent'
 
 import { fetchUsername, logOutUser,loginUser } from '../../actions/loginActions'
-
 import Base from "../../containers/Base"
+
 const mapStateToProps = (store, ownProps) => {
   console.log(store);
   return {
@@ -55,8 +54,7 @@ class Login extends Component {
             
         };
         const {
-            className,
-            ...props
+            className
         } = this.props;
         return (
             <Base title="Login" AppBar={false}>

@@ -1,8 +1,8 @@
-import React, { PropTypes, Component } from 'react';
-import classnames from 'classnames';
-import AppBar from 'material-ui/AppBar';
-
 import './style.css';
+
+import AppBar from 'material-ui/AppBar';
+import React, { Component } from 'react';
+import classnames from 'classnames';
 
 export default class Base extends Component {
   // static propTypes = {}
@@ -23,7 +23,7 @@ export default class Base extends Component {
     )
   }
   render() {
-    const { className, AppBar, ...props } = this.props;
+    const { className  } = this.props;
     console.log(this.props)
     return (
         <div className={classnames('Base', className)}>
